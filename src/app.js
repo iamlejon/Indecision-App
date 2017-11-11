@@ -1,10 +1,14 @@
 class IndecisionApp extends React.Component {
     render() {
+        const title= 'Indecision';
+        const subtitle = 'Put your life in the hands of a computer'; 
+        const options = ['Thing one', 'Thing two', 'Thing four'];
+
         return (
             <div>
-                <Header />
+                <Header title={title} subtitle={subtitle}/>
                 <Action />
-                <Options />
+                <Options options={options}/>
                 <AddOption />
             </div>
         );
@@ -15,31 +19,44 @@ class Header extends React.Component{
     render() {
         return (
             <div>
-                <h1>Indecision</h1>
-                <h2>Put your life in the hands of a computer</h2>
+                <h1>{this.props.title}</h1>
+                <h2>{this.props.subtitle}</h2>
             </div>
         );
     }
 }
 
 class Action extends React.Component{
+
+    handlePick() {
+    alert('handlePick');
+    }
+
     render() {
         return (
             <div>
-                <button>What should I do?</button>
+                <button onClick={this.handlePick}>What should I do?</button>
             </div>
 
         );
     }
 }
 
-class Options extends React.Component{
+class Options extends React.Component {
+
+    handleRemoveAll() {
+        alert('handleRemoveAll');
+    }
     render() {
         return (
             <div>
-                <p>Options component here</p>
-                <Option />
+
+            {
+                this.props.options.map((option) => <Option key={option}  optionText={option}/>)
+            }
+            <button onClick={this.handleRemoveAll}>Remove All?</button>
             </div>
+    
         );
     }
 }
@@ -48,7 +65,7 @@ class Option extends React.Component{
     render() {
         return (
             <div>
-                <p> Option component here </p>
+                Option: {this.props.optionText}
             </div>
         );
     }
@@ -58,7 +75,7 @@ class AddOption extends React.Component{
     render() {
         return (
             <div>
-                <p>AddOption component here</p>
+               <p>Add Option componeont here</p>
             </div>
         );
     }
