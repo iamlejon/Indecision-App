@@ -50,11 +50,7 @@ const renderApplication = () => {
             <button disabled={app.options.length === 0} onClick={onMakeDecision}>What should I do?</button>
             <button onClick={onRemoveAll}>Remove All </button>
             <ol>
-            {
-                app.options.map((option) => {
-                 return  <li key={option}>{option}</li>
-                })
-            }
+           
             </ol>
         
             <form onSubmit={onFormSubmit}>
