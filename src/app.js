@@ -9,6 +9,17 @@ class IndecisionApp extends React.Component {
         options: props.options
     };
 }
+componentDidMount() {
+    console.log('fetchingdata');
+}
+
+componentDidUpdate(prevProps, prevState) {
+    console.log('saving data');
+}
+
+componentWillUnmount () {
+    console.log('componentWillUnmount');
+}
 
 handleDeleteOptions() {
     this.setState(() => ({options: [] }));
@@ -19,9 +30,11 @@ handlePick() {
         alert(this.state.options[ranNum]);
 }
 
-handleDeleteOption(option) {
+handleDeleteOption(optionToRemove) {
     this.setState((prevState) => ({
-        options: prevState.options
+        options: prevState.options.filter((option) => {
+            return optionToRemove !== option;
+        })
     }));
 }
 
