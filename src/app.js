@@ -1,4 +1,5 @@
 class IndecisionApp extends React.Component {
+
     constructor(props) {
     super(props);
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
@@ -9,17 +10,38 @@ class IndecisionApp extends React.Component {
         options: props.options
     };
 }
+
+
+
+
+
+// LIFE CYCLE METHODS
 componentDidMount() {
-    console.log('fetchingdata');
+
+    try {
+        const json = localStorage.getItem('options');
+        const options = JSON.parse(json);
+        
+        if (options) {
+            this.setState(() => ({ options: options }));
+        }
+    } catch (e) {
+        // Do nothing at all if JSON data is invalid
+    }
 }
 
 componentDidUpdate(prevProps, prevState) {
-    console.log('saving data');
+    if (prevState.options.length !== this.state.options.length) {
+        const json = JSON.stringify(this.state.options);
+        localStorage.setItem('options', json);
+    }
 }
 
 componentWillUnmount () {
     console.log('componentWillUnmount');
 }
+
+// END LIFE CYCLE METHODS
 
 handleDeleteOptions() {
     this.setState(() => ({options: [] }));
@@ -71,6 +93,7 @@ handleAddOption(option) {
     }
 }
 
+//Set Default Props for Indecision App
 IndecisionApp.defaultProps = {
     options: []
 };
@@ -108,6 +131,9 @@ IndecisionApp.defaultProps = {
         return (
             <div>
             <button onClick={props.handleDeleteOptions}>Remove All?</button>
+            
+            {props.options.length === 0 && <p> Please add an option to get started! </p>}
+            
             {
                 props.options.map((option) => ( 
                     <Option 
@@ -152,7 +178,11 @@ class AddOption extends React.Component{
         const error = this.props.handleAddOption(option);
 
         this.setState(() => ({ error }));
+
+        if (!error) {
+            e.target.elements.option.value = '';
         }
+    }
     render() {
         return (
             <div>
@@ -165,14 +195,5 @@ class AddOption extends React.Component{
         );
     }
 }
-
-// const User = () => {
-//     return (
-//         <div>
-//         <p>Name: </p>
-//         <p>Age: </p>
-//         </div>
-//     );
-// };
 
 ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
